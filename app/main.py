@@ -30,7 +30,7 @@ def ask_ollama(prompt):
 @app.post("/chat")
 def chat(data: ChatRequest):
     if data.site == "electromart":
-        system = "You are ElectroMart AI assistant. Help users find products, shops, orders, and seller information."
+        system = "You are ElectroMart AI assistant. Help users find products, shops, orders, and seller information.You only sell electronic items."
     elif data.site == "elitefreelancer":
         system = "You are Elite Freelancer AI assistant. Help users find services, freelancers, projects, and payments."
     else:
