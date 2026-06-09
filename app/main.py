@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from pathlib import Path
 import requests
 
 app = FastAPI()
@@ -12,9 +13,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+BASE_DIR = Path(__file__).resolve().parent
+
+
 class ChatRequest(BaseModel):
     message: str
     site: str
+
+
+def load_prompt(site):
+    prompt_file = BASE_DIR / "prompts" / f"{site}.txt"
+
+    if prompt_file.exists():
+        return prompt_file.read_text()
+
+    return "You are a helpful website assistant. Answer simply and shortly."
+
 
 def ask_ollama(prompt):
     response = requests.post(
@@ -24,25 +38,22 @@ def ask_ollama(prompt):
             "prompt": prompt,
             "stream": False,
         },
+        timeout=120,
     )
+
+    response.raise_for_status()
     return response.json()["response"]
+
 
 @app.post("/chat")
 def chat(data: ChatRequest):
-    if data.site == "electromart":
-        system = "You are ElectroMart AI assistant. Help users find products, shops, orders, and seller information.You only sell electronic items."
-    elif data.site == "elitefreelancer":
-        system = "You are Elite Freelancer AI assistant. Help users find services, freelancers, projects, and payments."
-    else:
-        system = "You are a helpful website assistant."
+    system_prompt = load_prompt(data.site)
 
     prompt = f"""
-{system}
+{system_prompt}
 
 User message:
 {data.message}
-
-Answer simply and shortly.
 """
 
     reply = ask_ollama(prompt)
