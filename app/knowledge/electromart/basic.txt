@@ -1,0 +1,15 @@
+ElectroMart is an ecommerce website for electronics.
+
+Users can:
+- Browse products
+- View categories
+- Add products to cart
+- Buy using checkout
+- Check order status
+
+Sellers can:
+- Register as seller
+- Access shop dashboard
+- Add products
+- Manage inventory
+- View shop orders

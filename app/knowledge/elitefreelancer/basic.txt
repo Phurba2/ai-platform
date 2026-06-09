@@ -1,0 +1,13 @@
+Elite Freelancer is a freelance service website.
+
+Users can:
+- Browse services
+- Hire freelancers
+- Create project requests
+- Make payments
+- Track project status
+
+Freelancers can:
+- Offer services
+- Manage projects
+- Communicate with clients
