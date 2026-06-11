@@ -135,7 +135,18 @@ def chat(data: ChatRequest):
     # Real product search, no AI hallucination
     if data.site == "electromart" and is_product_search(data.message):
         products = search_electromart_products(data.message)
-        return {"reply": format_products(products)}
+
+        if products:
+            return {
+                "type": "products",
+                "reply": "Here are matching products:",
+                "products": products,
+            }
+
+        return {
+            "type": "text",
+            "reply": "I could not find matching products.",
+        }
 
     # Normal AI answer
     system_prompt = load_prompt(data.site)
