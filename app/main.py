@@ -122,6 +122,9 @@ def format_products(products):
         if product.get("description"):
             reply += f"  {product['description']}\n"
 
+        if product.get("url"):
+            reply += f"  View: {product['url']}\n"
+
         reply += "\n"
 
     return reply
